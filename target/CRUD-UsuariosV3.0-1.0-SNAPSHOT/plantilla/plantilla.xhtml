@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/default.css" rel="stylesheet" type="text/css"/>
+        <title>Primefaces</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="top">
+            <ui:insert name="top">Primefaces</ui:insert>
+        </div>
+        <div>
+            <div id="left">
+                <ui:insert name="left">
+                    <p:menu style="width: 100%">
+                        <p:submenu label="Acciones">
+                            <p:menuitem value="Ingresar" icon="pi pi-external-link" url="./faces/ingresar.xhtml"/>
+                            <p:menuitem value="Visualizar" icon="pi pi-save" url="./faces/verPersonas.xhtml"/>
+                            <p:menuitem value="Visualizar JSTL" icon="pi pi-save" url="./faces/verPersonasJSTL.xhtml"/>
+                        </p:submenu>
+                    </p:menu>
+                </ui:insert>
+            </div>
+            <div>
+                <div id="right">
+                    <ui:insert name="right"></ui:insert>
+                </div>
+                <div id="content" class="right_content">
+                    <ui:insert name="content"></ui:insert>
+                </div>
+            </div>
+        </div>        
+    </h:body>
+
+</html>

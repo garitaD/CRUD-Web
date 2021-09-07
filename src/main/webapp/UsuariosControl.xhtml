@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+        <title>Tabla Usuario</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:commandButton value="Agregar Persona" actionListener="#{usuariosControl.limpiarUsuario()}" oncomplete="PF('dialogoAgregar').show();" update=":formAgregar"/>
+            <p:separator/>
+        </h:form>
+
+        <h:form id="formListado">
+            <p:dataTable id="tablaUsuarios" paginator="true" paginatorPosition="bottom" rows="10" var="usuario" value="#{usuariosControl.listaUsuario}" emptyMessage="No existen usuarios">
+                <p:column headerText="ID Usuario">
+                    <h:outputText value="#{usuario.idUsuario}" />
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{usuario.nombre}" />
+                </p:column>
+
+                <p:column headerText="Primer Apellido">
+                    <h:outputText value="#{usuario.apellido1}" />
+                </p:column>
+
+                <p:column headerText="Segundo Apellido">
+                    <h:outputText value="#{usuario.apellido2}" />
+                </p:column>
+
+                <p:column headerText="Identificación">
+                    <h:outputText value="#{usuario.identificacion}" />
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{usuario.email}" />
+                </p:column>
+
+                <p:column headerText="MODIFICAR" style="text-align: center">
+                    <p:commandButton icon="fa fa-fw fa-edit" title="Modificar" oncomplete="PF('dialogoModificar').show();" update=":formModificar">
+                        <f:setPropertyActionListener target="#{usuariosControl.usuario}" value="#{usuario}"/>
+                    </p:commandButton>
+                </p:column>
+                <p:column headerText="ELIMINAR" style="text-align: center">
+                    <p:commandButton icon="fa fa-fw fa-remove" title="Eliminar" oncomplete="PF('dialogoEliminar').show();" update=":formEliminar">
+                        <f:setPropertyActionListener target="#{usuariosControl.usuario}" value="#{usuario}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+
+        <h:form id="formAgregar">
+            <p:dialog id="dlgAgregar" header="Agregar Usuario" widgetVar="dialogoAgregar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                <p:panelGrid columns="3" style="margin: 0 auto;">                                
+                    <p:outputLabel value="Nombre"/>
+                    
+                    <p:inputText id="nombre" value="#{usuariosControl.usuario.nombre}">
+                        <p:ajax event="blur" process="nombre" update="mensajeNombre bloquearBoton"
+                                listener="#{usuariosControl.ajaxValidarNombre()}"/>
+                    </p:inputText>
+                    <p:outputLabel id="mensajeNombre" value="#{usuariosControl.mensajeNombre}" class="text-danger"/>
+
+                    
+                    
+                    <p:outputLabel value="Primer Apellido"/>
+                    <p:inputText id="apellido1" value="#{usuariosControl.usuario.apellido1}">
+                        <p:ajax event="blur" process="apellido1" update="mensajeApellido1 bloquearBoton"
+                                listener="#{usuariosControl.ajaxValidarApellido1()}"/>
+                    </p:inputText>
+                    <p:outputLabel id="mensajeApellido1" value="#{usuariosControl.mensajeApellido1}" class="text-danger"/>
+
+                    
+                    <p:outputLabel value="Segundo Apellido"/>
+                    <p:inputText id="apellido2" value="#{usuariosControl.usuario.apellido2}">
+                        <p:ajax event="blur" process="apellido2" update="mensajeApellido2 bloquearBoton"
+                                listener="#{usuariosControl.ajaxValidarApellido2()}"/>
+                    </p:inputText>
+                    <p:outputLabel id="mensajeApellido2" value="#{usuariosControl.mensajeApellido2}" class="text-danger"/>
+
+                    <p:outputLabel value="Identificacion"/>
+                    <p:inputText id="identificacion" value="#{usuariosControl.usuario.identificacion}">
+                        <p:ajax event="blur" process="identificacion" update="mensajeIdentificacion bloquearBoton"
+                                listener="#{usuariosControl.ajaxValidarIdentificacion()}"/>
+                    </p:inputText>
+                    <p:outputLabel id="mensajeIdentificacion" value="#{usuariosControl.mensajeIdentificacion}" class="text-danger"/>
+
+                    <p:outputLabel value="Email"/>
+                    <p:inputText id="email" value="#{usuariosControl.usuario.email}">
+                        
+                        <p:ajax event="blur" process="email" update="mensajeEmail bloquearBoton"
+                                listener="#{usuariosControl.ajaxValidarEmail()}"/>
+                    </p:inputText>
+                    
+                    <h:outputText id="mensajeEmail" value="#{usuariosControl.mensajeCorreo}" class="text-danger"/>
+                </p:panelGrid>
+
+                <p:commandButton  id="bloquearBoton" value="Guardar" action="#{usuariosControl.crearusuario()}" update=":formListado:tablaUsuarios mensajeIdentificacion" oncomplete="PF('dialogoAgregar').hide();"
+                                  disabled="#{usuariosControl.bloquearBoton}"/>
+                <p:commandButton  value="Cancelar" onclick="PF('dialogoAgregar').hide();"/>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="formModificar">
+            <p:dialog id="dlgModificar" header="Modificar Usuario" widgetVar="dialogoModificar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                <p:panelGrid columns="2" style="margin: 0 auto;">
+
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText value="#{usuariosControl.usuario.nombre}"/>
+
+                    <p:outputLabel value="Primer Apellido"/>
+                    <p:inputText value="#{usuariosControl.usuario.apellido1}"/>
+
+                    <p:outputLabel value="Segundo Apellido"/>
+                    <p:inputText value="#{usuariosControl.usuario.apellido2}"/>
+
+                    <p:outputLabel value="Identificacion"/>
+                    <p:inputText value="#{usuariosControl.usuario.identificacion}"/>
+                    
+                     <p:outputLabel value="Email"/>
+                     <p:inputText value="#{usuariosControl.usuario.email}"/>
+
+                </p:panelGrid>
+                <p:commandButton  value="Guardar" actionListener="#{usuariosControl.modificarUsuario()}" update=":formListado:tablaUsuarios" oncomplete="PF('dialogoModificar').hide();"/>
+                <p:commandButton  value="Cancelar" onclick="PF('dialogoModificar').hide();"/>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="formEliminar">
+            <p:dialog id="dlgEliminar" header="Eliminar Usuarios" widgetVar="dialogoEliminar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                <h:outputText value="Desea eliminar este registro?"/>
+                <p:commandButton  value="Si" actionListener="#{usuariosControl.eliminarUsuario()}" update=":formListado:tablaUsuarios" oncomplete="PF('dialogoEliminar').hide();"/>
+                <p:commandButton  value="No" onclick="PF('dialogoEliminar').hide();"/>
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</html>
+

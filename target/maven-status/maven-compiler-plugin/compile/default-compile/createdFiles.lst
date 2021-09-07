@@ -1,0 +1,6 @@
+com\UsuariosControl.class
+dao\Usuario.class
+serviciosWeb\UsuarioResource.class
+dao\ConexionHibernate.class
+dao\UsuarioRepositorio.class
+serviciosWeb\JAXRSConfiguration.class
